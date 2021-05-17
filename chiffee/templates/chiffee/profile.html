@@ -1,0 +1,85 @@
+{% extends 'chiffee/base.html' %}
+
+{% load chiffee_tags %}
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'chiffee/css/profile.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="grid-main">
+        <form id="profile-picture" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <img id="profile-picture-img" src="{% if user.employee.picture %}
+                                                   {{ user.employee.picture.url }}
+                                               {% else %}
+                                                   {{ user.employee.picture_placeholder.url }}
+                                               {% endif %}" alt="Benutzerbild">
+            {{ form.picture }}
+            <label id="profile-picture-upload-label" for="{{ form.picture.id_for_label }}">
+                <img class="img-32" src="{% static 'chiffee/images/32x32/upload.png' %}" alt="Bild hochladen">
+            </label>
+            <button id="profile-picture-button-delete" type="submit" name="delete">
+                <img class="img-32" src="{% static 'chiffee/images/32x32/delete.png' %}" alt="Foto löschen">
+            </button>
+        </form>
+        <form id="grid-settings" method="post">
+            {% csrf_token %}
+            <div class="grid-settings-setting">Erhalten Sie eine E-Mail, wenn Sie Geld einzahlen</div>
+            <div class="grid-settings-toggle">
+                <input type="checkbox"
+                       id="input-emails-deposits"
+                       class="grid-settings-toggle-checkbox"
+                       name="get-emails-deposits"
+                       {% if get_emails_deposits %} checked {% endif %}>
+                <label for="input-emails-deposits" class="grid-settings-toggle-switch"></label>
+            </div>
+            <div class="grid-settings-setting">Erhalten Sie eine E-Mail, wenn Sie einen Kauf tätigen</div>
+            <div class="grid-settings-toggle">
+                <input type="checkbox"
+                       id="input-emails-purchases"
+                       class="grid-settings-toggle-checkbox"
+                       name="get-emails-purchases"
+                       {% if get_emails_purchases %} checked {% endif %}>
+                <label for="input-emails-purchases" class="grid-settings-toggle-switch"></label>
+            </div>
+            <button id="grid-settings-button-submit" class="button-main" type="submit">Speichern</button>
+        </form>
+        <div id="balance">Saldo: €{{ balance }}</div>
+        {% if purchases|length > 0 %}
+            <div id="grid-purchases">
+                {% for purchase_group in purchases %}
+                    {% for purchase in purchase_group %}
+                        {% if forloop.first %}
+                            <div class="grid-purchases-date">{{ purchase.date|date:'d.m.Y' }}</div>
+                            <div class="grid-purchases-time">{{ purchase.date|date:'H:i' }}</div>
+                        {% endif %}
+                        <div class="grid-purchases-product {% if purchase.product.category == categories.0.0 %}
+                                                               snack
+                                                           {% elif purchase.product.category == categories.1.0 %}
+                                                               drink
+                                                           {% elif purchase.product.category == categories.2.0 %}
+                                                               ice-cream
+                                                           {% endif %}">
+                            <span>{{ purchase.quantity }} {{ purchase.product.name }}</span>
+                        </div>
+                        <div class="grid-purchases-price">€{{ purchase.total_price }}</div>
+                        {% if forloop.first %}
+                            <div class="grid-purchases-total">
+                                {% with total=purchase_group|purchase_group_total %}
+                                    €{{ total }}
+                                {% endwith %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </div>
+            <form id="pagination">
+                {% include 'chiffee/pagination.html' %}
+            </form>
+        {% else %}
+            <img id="img-box" class="img-256" src="{% static 'chiffee/images/256x256/box.png' %}" alt="Kasten">
+        {% endif %}
+    </div>
+{% endblock %}

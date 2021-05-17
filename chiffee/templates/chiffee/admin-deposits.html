@@ -1,0 +1,24 @@
+{% extends 'chiffee/base.html' %}
+
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'chiffee/css/admin-deposits.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="grid-main">
+        <form id="grid-deposits" method="post">
+            {% csrf_token %}
+            <img id="grid-deposits-img-money"
+                 class="img-256"
+                 src="{% static 'chiffee/images/256x256/money.png' %}"
+                 alt="Geld">
+            <div>{{ form.user.label }}</div>
+            <div>{{ form.user }}</div>
+            <div>{{ form.deposit.label }}</div>
+            <div>{{ form.deposit }}</div>
+            <button id="grid-deposits-button-submit" class="button-main" type="submit">Speichern</button>
+        </form>
+    </div>
+{% endblock %}

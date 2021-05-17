@@ -1,0 +1,38 @@
+{% extends 'chiffee/base.html' %}
+
+{% load static %}
+{% load chiffee_tags %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'chiffee/css/purchase.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="grid-main">
+        {% if users|length > 0 %}
+            <form class="grid-menu" action="{% url 'chiffee:purchase' %}" method="post">
+                {% csrf_token %}
+                {% for user in users %}
+                    <button class="grid-menu-user {% if user|has_group:'prof' %}
+                                                      professor
+                                                  {% elif user|has_group:'wimi' %}
+                                                      employee
+                                                  {% elif user|has_group:'stud' %}
+                                                      student
+                                                  {% endif %}"
+                            name="username"
+                            type="submit"
+                            value="{{ user.username }}">
+                        {{ user }}
+                    </button>
+                {% endfor %}
+                <input type="hidden" name="product" value="{{ product }}">
+            </form>
+        {% else %}
+            <img id="img-users"
+                 class="img-512"
+                 src="{% static 'chiffee/images/512x512/users.png' %}"
+                 alt="Benutzer">
+        {% endif %}
+    </div>
+{% endblock %}

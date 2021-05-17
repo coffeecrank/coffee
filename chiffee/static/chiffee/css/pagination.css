@@ -1,0 +1,47 @@
+:root {
+    --bg-color-button-page-active: #969696;
+    --bg-color-button-page-hover: white;
+    --color-button-arrow: white;
+    --color-button-page: white;
+    --color-button-page-active: black;
+    --color-button-page-hover: black;
+    --color-button-page-section: white;
+}
+
+.button-arrow {
+    background-color: transparent;
+    color: var(--color-button-arrow);
+    height: 32px;
+    width: 32px;
+}
+
+.button-page {
+    background-color: transparent;
+    border-radius: 3px;
+    color: var(--color-button-page);
+    height: 32px;
+    min-width: 55px;
+}
+
+.button-page:hover {
+    background-color: var(--bg-color-button-page-hover);
+    color: var(--color-button-page-hover);
+}
+
+.button-page-section {
+    background-color: transparent;
+    color: var(--color-button-page-section);
+    height: 32px;
+    min-width: 55px;
+}
+
+.button-arrow, .button-page, .button-page-section {
+    border: none;
+    font-size: 85%;
+    height: 100%;
+}
+
+.button-page-active {
+    background-color: var(--bg-color-button-page-active);
+    color: var(--color-button-page-active);
+}

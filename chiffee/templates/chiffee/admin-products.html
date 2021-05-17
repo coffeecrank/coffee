@@ -1,0 +1,80 @@
+{% extends "chiffee/base.html" %}
+
+{% load chiffee_tags %}
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'chiffee/css/admin-products.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="grid-main">
+        {% if inactive_products %}
+            <form id="grid-products-inactive" method="post">
+                {% csrf_token %}
+                <div id="grid-products-inactive-product-label">Produkt</div>
+                <div id="grid-products-inactive-product">{{ inactive_products.product }}</div>
+                <button id="grid-products-inactive-button-submit"
+                        class="button-main"
+                        type="submit"
+                        name="restore"
+                        value="{{ inactive_products.product.name }}">
+                    Wiederherstellen
+                </button>
+            </form>
+        {% else %}
+            <img id="img-box" src="{% static 'chiffee/images/256x256/box.png' %}" alt="Kasten">
+        {% endif %}
+        {% if active_products|length > 0 %}
+            <form id="grid-products-active" method="post">
+                {% csrf_token %}
+                {% for active_product in active_products %}
+                    <div class="grid-products-active-product {% if active_product.category == categories.0.0 %}
+                                                                 snack
+                                                             {% elif active_product.category == categories.1.0 %}
+                                                                 drink
+                                                             {% elif active_product.category == categories.2.0 %}
+                                                                 ice-cream
+                                                             {% endif %}">
+                        <span>{{ active_product.name }}</span>
+                    </div>
+                    <input aria-label="Preis"
+                           class="grid-products-active-price"
+                           onfocusout="document.getElementById('grid-products-active-price-button-edit').click()"
+                           name="{{ active_product.name }}"
+                           value="€{{ active_product.price }}">
+                    <button id="grid-products-active-price-button-edit"
+                            hidden
+                            type="submit"
+                            name="product"
+                            value="{{ active_product.name }}">
+                    </button>
+                    <div class="grid-products-active-category">
+                        <span>
+                            {% if active_product.category == categories.0.0 %}
+                                Snacks
+                            {% elif active_product.category == categories.1.0 %}
+                                Trinken
+                            {% elif active_product.category == categories.2.0 %}
+                                Eis
+                            {% endif %}
+                        </span>
+                    </div>
+                    <button class="grid-products-active-button-deactivate button-checkbox-cross"
+                            type="submit"
+                            name="deactivate"
+                            value="{{ active_product.name }}">
+                    </button>
+                {% endfor %}
+            </form>
+            <form id="pagination">
+                {% include 'chiffee/pagination.html' %}
+            </form>
+        {% else %}
+            <img id="img-checklist"
+                 class="img-256"
+                 src="{% static 'chiffee/images/256x256/checklist.png' %}"
+                 alt="Checkliste">
+        {% endif %}
+    </div>
+{% endblock %}

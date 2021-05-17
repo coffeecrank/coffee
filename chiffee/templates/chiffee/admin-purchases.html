@@ -1,0 +1,64 @@
+{% extends 'chiffee/base.html' %}
+
+{% load chiffee_tags %}
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'chiffee/css/admin-purchases.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="grid-main">
+        <form id="grid-search">
+            <img id="grid-search-img-magnifying-glass"
+                 src="{% static 'chiffee/images/128x128/magnifying-glass.png' %}"
+                 alt="Lupe">
+            <label id="grid-search-username-label" for="grid-search-username">Benutzer</label>
+            {{ filter.form.username }}
+            <label id="grid-search-product-label" for="grid-search-product">Produkt</label>
+            {{ filter.form.product }}
+            <label id="grid-search-date-range-label" for="grid-search-date-range">Datumsbereich</label>
+            {{ filter.form.date_range }}
+            <div id="grid-search-delimiter">ODER</div>
+            <label id="grid-search-date-from-label" for="grid-search-date-from-to_0">Von</label>
+            <label id="grid-search-date-to-label" for="grid-search-date-from-to_1">Bis</label>
+            {{ filter.form.date_from_to }}
+            <button id="grid-search-button-submit" class="button-main" type="submit">Suchen</button>
+        </form>
+        {% if purchases|length > 0 %}
+            <div id="grid-purchases">
+                {% for purchase_group in purchases %}
+                    {% for purchase in purchase_group %}
+                        {% if forloop.first %}
+                            <div class="grid-purchases-date">{{ purchase.date|date:'d.m.Y' }}</div>
+                            <div class="grid-purchases-time">{{ purchase.date|date:'H:i' }}</div>
+                            <div class="grid-purchases-user">{{ purchase.user }}</div>
+                        {% endif %}
+                        <div class="grid-purchases-product {% if purchase.product.category == categories.0.0 %}
+                                                               snack
+                                                           {% elif purchase.product.category == categories.1.0 %}
+                                                               drink
+                                                           {% elif purchase.product.category == categories.2.0 %}
+                                                               ice-cream
+                                                           {% endif %}">
+                            <span>{{ purchase.quantity }} {{ purchase.product.name }}</span>
+                        </div>
+                        <div class="grid-purchases-price">€{{ purchase.total_price }}</div>
+                        {% if forloop.first %}
+                            <div class="grid-purchases-total">
+                                {% with total=purchase_group|purchase_group_total %}
+                                    €{{ total }}
+                                {% endwith %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </div>
+            <form id="pagination">
+                {% include 'chiffee/pagination.html' %}
+            </form>
+        {% else %}
+            <img id="img-box" src="{% static 'chiffee/images/256x256/box.png' %}" alt="Kasten">
+        {% endif %}
+    </div>
+{% endblock %}

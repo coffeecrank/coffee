@@ -1,0 +1,96 @@
+{% extends 'chiffee/base.html' %}
+
+{% load static %}
+{% load chiffee_tags %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'chiffee/css/purchase.css' %}">
+    <link rel="stylesheet" href="{% static 'chiffee/css/checkout.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="grid-main">
+        {% if users|length > 0 %}
+            {% if shopping_cart|length > 0 %}
+                <form id="grid-products" method="post">
+                    {% csrf_token %}
+                    {% for product, quantity in shopping_cart.items %}
+                        <div class="grid-products-name">{{ product }}</div>
+                        <div class="grid-products-quantity">
+                            <button class="grid-products-quantity-increase"
+                                type="submit"
+                                name="increase"
+                                value="{{ product }}">
+                                <img class="img-24" src="{% static 'chiffee/images/24x24/plus.png' %}" alt="Erhöhen">
+                            </button>
+                            <span>{{ quantity }}</span>
+                            <button class="grid-products-quantity-decrease"
+                                    type="submit"
+                                    name="decrease"
+                                    value="{{ product }}">
+                                <img class="img-24"
+                                     src="{% static 'chiffee/images/24x24/minus.png' %}"
+                                     alt="Verringern">
+                            </button>
+                        </div>
+                        <button class="grid-products-delete"
+                                type="submit"
+                                name="delete"
+                                value="{{ product }}">
+                            <img class="img-24" src="{% static 'chiffee/images/24x24/delete.png' %}" alt="Entfernen">
+                        </button>
+                    {% endfor %}
+                </form>
+                {% if pages|length > 1 %}
+                    <form id="pagination">
+                        {% include 'chiffee/pagination.html' %}
+                    </form>
+                {% endif %}
+                <form id="grid-users" method="post">
+                    {% csrf_token %}
+                    {% for user in users %}
+                        <button class="grid-users-user {% if user|has_group:'prof' %}
+                                                           professor
+                                                       {% elif user|has_group:'wimi' %}
+                                                           employee
+                                                       {% elif user|has_group:'stud' %}
+                                                           student
+                                                       {% endif %}
+                                                       {% if username and user.username == username %}
+                                                           grid-users-button-user-active
+                                                       {% endif %}"
+                                type="submit"
+                                name="username"
+                                value="{{ user.username }}">
+                            {{ user }}
+                        </button>
+                    {% endfor %}
+                </form>
+                <form id="checkout" action="{% url 'chiffee:confirm' %}" method="post">
+                    {% csrf_token %}
+                    <div id="checkout-check">
+                        <div>€{{ check }}</div>
+                    </div>
+                    <button id="checkout-button-confirm" type="submit" name="confirm">
+                        <img class="img-64" src="{% static 'chiffee/images/64x64/confirm.png' %}" alt="Bestätigen">
+                    </button>
+                    <button id="checkout-button-cancel" type="submit" name="cancel">
+                        <img class="img-64" src="{% static 'chiffee/images/64x64/cancel.png' %}" alt="Stornieren">
+                    </button>
+                    {% if user.is_authenticated %}
+                        <input type="hidden" name="username" value="{{ user.username }}">
+                    {% elif username %}
+                        <input type="hidden" name="username" value="{{ username }}">
+                    {% endif %}
+                </form>
+            {% else %}
+                <img id="img-groceries"
+                     class="img-512"
+                     src="{% static 'chiffee/images/512x512/groceries.png' %}"
+                     alt="Lebensmittel">
+            {% endif %}
+        {% else %}
+            <img id="img-users" class="img-512" src="{% static 'chiffee/images/512x512/users.png' %}" alt="Benutzer">
+        {% endif %}
+    </div>
+{% endblock %}

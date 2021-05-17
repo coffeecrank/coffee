@@ -1,0 +1,19 @@
+{% extends 'chiffee/base.html' %}
+
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'chiffee/css/redirect.css' %}">
+
+    <script type="text/javascript" src="{% static 'chiffee/js/redirect.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="grid-main">
+        {% if success %}
+            <img id="img-success" class="img-512" src="{% static 'chiffee/images/512x512/success.png' %}" alt="Erfolg">
+        {% else %}
+            <img id="img-failure" class="img-512" src="{% static 'chiffee/images/512x512/failure.png' %}" alt="Fehler">
+        {% endif %}
+    </div>
+{% endblock %}

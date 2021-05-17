@@ -1,0 +1,108 @@
+#grid-products {
+    align-items: center;
+    display: grid;
+    grid-column: 1 / 5;
+    grid-row: 1 / 18;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+}
+
+.grid-products-name {
+    grid-column: 1 / 4;
+}
+
+#grid-products button {
+    background-color: transparent;
+    border: none;
+    height: 24px;
+    padding: 0;
+    width: 24px;
+}
+
+.grid-products-quantity {
+    align-items: center;
+    display: flex;
+    grid-column: 5 / 7;
+    justify-content: space-around;
+}
+
+.grid-products-delete {
+    justify-self: center;
+}
+
+#pagination {
+    align-self: center;
+    grid-column: 1 / 5;
+    grid-row: 18 / 19;
+}
+
+#grid-users {
+    display: grid;
+    grid-auto-rows: 1fr;
+    grid-column: 5 / 13;
+    grid-gap: 20px;
+    grid-row: 1 / 15;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    margin-left: 20px;
+}
+
+.grid-users-user {
+    border: none;
+    color: var(--color-menu-item);
+    font-size: 100%;
+}
+
+.grid-users-user:hover {
+    background-color: var(--bg-color-menu-item-hover);
+    color: var(--color-menu-item);
+}
+
+.grid-users-button-user-active {
+    background-color: white;
+    color: black;
+}
+
+#checkout {
+    align-self: center;
+    display: flex;
+    grid-column: 5 / 13;
+    grid-row: 15 / 19;
+    justify-content: center;
+}
+
+#checkout > * {
+    margin: 10px;
+}
+
+#checkout > button {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+}
+
+#checkout-check {
+    align-items: center;
+    background-color: #b35340;
+    border-radius: 20px 0;
+    display: flex;
+    font-size: 200%;
+    justify-content: center;
+}
+
+#checkout-check > div {
+    padding: 10px;
+}
+
+#img-groceries {
+    align-self: center;
+    grid-column: 1 / 13;
+    grid-row: 1 / 19;
+    justify-self: center;
+}
+
+#img-users {
+    align-self: center;
+    grid-column: 1 / 13;
+    grid-row: 1 / 19;
+    justify-self: center;
+}

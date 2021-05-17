@@ -1,0 +1,24 @@
+#grid-deposits {
+    align-items: center;
+    align-self: center;
+    display: grid;
+    grid-column: 1 / 12;
+    grid-gap: 20px;
+    grid-row: 1 / 19;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    justify-self: center;
+}
+
+#grid-deposits-img-money {
+    grid-column: 1 / 3;
+    grid-row: 1 / 7;
+    justify-self: center;
+}
+
+#grid-deposits-button-submit {
+    grid-column: 1 / 3;
+    grid-row: 9 / 11;
+    justify-self: center;
+    width: 150px;
+}

@@ -1,0 +1,84 @@
+:root {
+    --border-grid-accounts-balance-negative: 1px solid #d9534f;
+    --border-profile-picture-container: 1px solid white;
+}
+
+#grid-accounts {
+    align-items: center;
+    display: grid;
+    grid-column: 5 / 9;
+    grid-gap: 20px;
+    grid-row: 1 / 18;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+}
+
+.grid-accounts-user {
+    display: flex;
+    grid-column: 1 / 4;
+    height: 100%;
+}
+
+.grid-accounts-user > span {
+    align-self: center;
+    padding: 10px;
+}
+
+.grid-accounts-balance {
+    display: flex;
+    grid-column: 4 / 5;
+    height: 100%;
+    justify-self: right;
+}
+
+.grid-accounts-balance > span {
+    align-self: center;
+    padding: 10px;
+}
+
+.grid-accounts-balance-negative {
+    border: var(--border-grid-accounts-balance-negative);
+}
+
+#pagination {
+    align-self: center;
+    grid-column: 5 / 9;
+    grid-row: 18 / 19;
+    justify-self: right;
+}
+
+#img-users-256 {
+    align-self: center;
+    grid-column: 1 / 5;
+    grid-row: 1 / 19;
+    justify-self: center;
+}
+
+#img-money {
+    align-self: center;
+    grid-column: 9 / 13;
+    grid-row: 1 / 19;
+    justify-self: center;
+}
+
+#img-users-512 {
+    align-self: center;
+    grid-column: 1 / 13;
+    grid-row: 1 / 19;
+    justify-self: center;
+}
+
+#container-profile-picture {
+    -webkit-transition: opacity 0.2s;
+    -moz-transition: opacity 0.2s;
+    -o-transition: opacity 0.2s;
+    transition: opacity 0.2s;
+    background-size: 100px;
+    border: var(--border-profile-picture-container);
+    border-radius: 5px;
+    height: 100px;
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    width: 100px;
+}

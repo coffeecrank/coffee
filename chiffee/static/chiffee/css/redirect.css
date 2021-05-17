@@ -1,0 +1,6 @@
+#img-failure, #img-success {
+    align-self: center;
+    grid-column: 1 / 13;
+    grid-row: 1 / 19;
+    justify-self: center;
+}

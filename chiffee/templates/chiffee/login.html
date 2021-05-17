@@ -1,0 +1,28 @@
+{% extends 'chiffee/base.html' %}
+
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'chiffee/css/login.css' %}">
+{% endblock %}
+
+{% block content %}
+    <form class="grid-main" method="post">
+        {% csrf_token %}
+        <div id="grid-login">
+            <img id="grid-login-img-user"
+                 class="img-128"
+                 src="{% static 'chiffee/images/128x128/user.png' %}"
+                 alt="Benutzer">
+            <label id="grid-login-username-label" for="grid-login-username">Benutzername</label>
+            <input id="grid-login-username" type="text" name="username">
+            <label id="grid-login-password-label" for="grid-login-password">Passwort</label>
+            <input id="grid-login-password" type="password" name="password">
+            {% if form.errors %}
+                <strong id="grid-login-error">Zugriff verweigert.</strong>
+            {% endif %}
+            <button id="grid-login-button-submit" class="button-main" type="submit">Einloggen</button>
+        </div>
+        <input type="hidden" name="next" value="{% url 'chiffee:index' %}">
+    </form>
+{% endblock %}

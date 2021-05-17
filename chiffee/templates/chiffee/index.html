@@ -1,0 +1,50 @@
+{% extends 'chiffee/base.html' %}
+
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'chiffee/css/index.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="grid-main">
+        {% if products|length > 0 %}
+            <div class="grid-menu">
+                {% for product in products %}
+                    <div>
+                        <form class="height-100" action="{% url 'chiffee:purchase' %}" {% if user.is_authenticated %}
+                                                                                           method="post"
+                                                                                       {% endif %}>
+                            {% if user.is_authenticated %}
+                                {% csrf_token %}
+                            {% endif %}
+                            <button class="grid-menu-button-product {% if product.category == categories.0.0 %}
+                                                                        snack
+                                                                    {% elif product.category == categories.1.0 %}
+                                                                        drink
+                                                                    {% elif product.category == categories.2.0 %}
+                                                                        ice-cream
+                                                                    {% endif %}"
+                                    type="submit"
+                                    name="product"
+                                    value="{{ product.name }}">
+                                {{ product.name }} (€{{ product.price }})
+                            </button>
+                        </form>
+                        <form class="grid-menu-shopping-cart" action="{% url 'chiffee:add-to-cart' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" name="product" value="{{ product.name }}">
+                                <img id="grid-menu-shopping-cart-img-shopping-cart"
+                                     class="img-32"
+                                     src="{% static 'chiffee/images/48x48/shopping-cart-small.png' %}"
+                                     alt="In den Warenkorb legen">
+                            </button>
+                        </form>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <img id="img-box" class="img-256" src="{% static 'chiffee/images/256x256/box.png' %}" alt="Kasten">
+        {% endif %}
+    </div>
+{% endblock %}

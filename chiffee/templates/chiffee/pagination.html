@@ -1,0 +1,27 @@
+{% load chiffee_tags %}
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'chiffee/css/pagination.css' %}">
+{% endblock %}
+
+<button class="button-arrow" type="submit" name="page" value="{{ current_page|prev_page }}">
+    <span>&laquo;</span>
+</button>
+{% for page in pages %}
+    {% if page == 'prev_page_section' %}
+        <button class="button-page-section" type="submit" name="page" value="{{ pages|prev_page_section }}">...</button>
+    {% elif page == 'next_page_section' %}
+        <button class="button-page-section" type="submit" name="page" value="{{ pages|next_page_section }}">...</button>
+    {% else %}
+        <button class="button-page {% if page == current_page %} button-page-active {% endif %}"
+                type="submit"
+                name="page"
+                value="{{ page }}">
+            {{ page }}
+        </button>
+    {% endif %}
+{% endfor %}
+<button class="button-arrow" type="submit" name="page" value="{{ current_page|next_page:pages }}">
+    <span>&raquo;</span>
+</button>

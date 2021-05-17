@@ -1,0 +1,297 @@
+:root {
+    /* Links */
+    --bg-color-dropdown-link: #d9a679;
+    --bg-color-dropdown-link-hover: #a6754b;
+    --bg-color-nav-link-active: #f2e2ce;
+    --bg-color-nav-link-hover: #734022;
+    --border-color-nav-link-hover: #a6754b;
+    --border-color-dropdown-link: #a6754b;
+    --color-dropdown-link: black;
+    --color-dropdown-link-hover: white;
+    --color-nav-link: #d9a679;
+    --color-nav-link-active: black;
+    --color-nav-link-hover: white;
+
+    /* Buttons */
+    --bg-color-button-checkbox-cross: #d9534f;
+    --bg-color-button-checkbox-cross-hover: #b62b27;
+    --bg-color-button-main: #0275d8;
+    --bg-color-button-main-hover: #0157a2;
+    --color-button-checkbox-cross: white;
+    --color-button-main: white;
+
+    /* Inputs */
+    --border-color-input: #a5a5a5;
+    --box-shadow-color-input-focus: rgba(2, 117, 216, 0.5);
+    --outline-color-input-focus: white;
+
+    /* Misc. */
+    --bg-color-drink: #588f27;
+    --bg-color-employee: #128278;
+    --bg-color-ice-cream: #911146;
+    --bg-color-main: #233342;
+    --bg-color-menu-item-hover: #c84663;
+    --bg-color-professor: #075095;
+    --bg-color-shopping-cart-counter: #b35340;
+    --bg-color-snack: #046380;
+    --bg-color-student: #695E5E;
+    --bg-color-toggle-switch: white;
+    --bg-color-toggle-switch-off: #969696;
+    --bg-color-toggle-switch-on: #5cb85c;
+    --color-clock: #ffb03b;
+    --color-danger: #d9534f;
+    --color-grid-purchases-total: #b35340;
+    --color-main: white;
+    --color-menu-item: white;
+    --color-shopping-cart-counter: white;
+}
+
+* {
+    box-sizing: border-box;
+    transition: background-color 0.2s, border 0.2s, color 0.2s, height 0.2s, width 0.2s;
+}
+
+*:not(input):focus {
+    outline: 1px solid var(--outline-color-input-focus);
+    z-index: 999;
+}
+
+*::-moz-focus-inner {
+    border: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+body {
+    background-color: var(--bg-color-main);
+    color: var(--color-main);
+    font-family: var(--font-family-regular);
+    margin: 0;
+    visibility: hidden;
+}
+
+button {
+    cursor: pointer;
+    padding: 10px;
+}
+
+input, select {
+    border: 1px solid var(--border-color-input);
+    border-radius: 3px;
+    font-family: var(--font-family-regular);
+    height: 100%;
+    padding: 5px;
+    width: 100%;
+}
+
+input:hover, select:hover {
+    box-shadow: 0 0 5px var(--box-shadow-color-input-focus);
+}
+
+.button-checkbox-cross {
+    align-items: center;
+    background-color: var(--bg-color-button-checkbox-cross);
+    border: none;
+    border-radius: 5px;
+    color: var(--color-button-checkbox-cross);
+    font-family: var(--font-family-bold);
+    height: 30px;
+    width: 30px;
+}
+
+.button-checkbox-cross:after {
+    content: 'X';
+}
+
+.button-checkbox-cross:hover {
+    background-color: var(--bg-color-button-checkbox-cross-hover);
+}
+
+.button-main {
+    background-color: var(--bg-color-button-main);
+    border: none;
+    border-radius: 5px;
+    color: var(--color-button-main);
+    font-size: 100%;
+}
+
+.button-main:hover {
+    background-color: var(--bg-color-button-main-hover);
+}
+
+#clock {
+    align-self: center;
+    color: var(--color-clock);
+    font-family: var(--font-family-digital);
+    font-size: 500%;
+    margin: 10px 30px 10px 10px;
+}
+
+#content {
+    font-size: 125%;
+    margin: 20px;
+}
+
+.drink {
+    background-color: var(--bg-color-drink);
+}
+
+#dropdown {
+    cursor: pointer;
+    position: relative;
+}
+
+#dropdown > div {
+    display: none;
+    left: -1px;
+    position: absolute;
+    z-index: 998;
+}
+
+#dropdown:hover > div {
+    display: flex;
+    flex-direction: column;
+}
+
+.dropdown-link {
+    background-color: var(--bg-color-dropdown-link);
+    border-color: var(--border-color-dropdown-link);
+    border-style: solid;
+    border-width: 0 1px 1px 1px;
+    color: var(--color-dropdown-link);
+    display: flex;
+    font-size: 75%;
+    justify-content: center;
+}
+
+.dropdown-link:hover {
+    background-color: var(--bg-color-dropdown-link-hover);
+    color: var(--color-dropdown-link-hover);
+}
+
+.dropdown-link > span {
+    align-self: center;
+    padding: 20px;
+}
+
+.employee {
+    background-color: var(--bg-color-employee);
+}
+
+.grid-main {
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: repeat(18, 1fr);
+    height: 100%;
+}
+
+.grid-menu {
+    display: grid;
+    grid-auto-rows: 1fr;
+    grid-gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+.grid-menu > * {
+    font-size: 100%;
+}
+
+#header {
+    background-color: var(--bg-color-main);
+    display: flex;
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    z-index: 997;
+}
+
+.height-100 {
+    height: 100%;
+}
+
+.ice-cream {
+    background-color: var(--bg-color-ice-cream);
+}
+
+#img-logo {
+    height: 137px;
+    margin: 10px;
+    width: 350px;
+}
+
+#nav {
+    display: flex;
+    margin: 10px;
+}
+
+.nav-link {
+    align-self: center;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    color: var(--color-nav-link);
+    font-size: 150%;
+    margin: 10px;
+    padding: 20px 30px;
+    text-align: center;
+}
+
+.nav-link:hover {
+    background-color: var(--bg-color-nav-link-hover);
+    border-color: var(--border-color-nav-link-hover);
+    border-radius: 2px;
+    color: var(--color-nav-link-hover);
+}
+
+.nav-link-active {
+    background-color: var(--bg-color-nav-link-active);
+    border-radius: 2px 2px 35px 2px;
+    color: var(--color-nav-link-active);
+}
+
+.professor {
+    background-color: var(--bg-color-professor);
+}
+
+#shopping-cart {
+    display: flex;
+    flex: 1;
+    justify-content: end;
+    margin: 10px 30px 10px 10px;
+}
+
+#shopping-cart > a {
+    align-self: center;
+    height: 64px;
+    position: relative;
+    width: 64px;
+}
+
+#shopping-cart-counter {
+    background-color: var(--bg-color-shopping-cart-counter);
+    border-radius: 100%;
+    color: var(--color-shopping-cart-counter);
+    display: flex;
+    font-family: var(--font-family-bold);
+    height: 30px;
+    justify-content: center;
+    position: absolute;
+    right: -15px;
+    top: -5px;
+    width: 30px;
+}
+
+#shopping-cart-counter > span {
+    align-self: center;
+    padding: 10px;
+}
+
+.snack {
+    background-color: var(--bg-color-snack);
+}
+
+.student {
+    background-color: var(--bg-color-student);
+}

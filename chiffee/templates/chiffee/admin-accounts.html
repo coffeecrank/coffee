@@ -1,0 +1,74 @@
+{% extends 'chiffee/base.html' %}
+
+{% load chiffee_tags %}
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'chiffee/css/admin-accounts.css' %}">
+
+    <script src="{% static 'chiffee/js/admin-accounts.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <script>
+        let users = [];
+
+        {% for user in users %}
+            user = {}
+            user['lastName'] = '{{ user.last_name }}';
+            user['firstName'] = '{{ user.first_name }}';
+            user['profilePictureUrl'] = {% if user.employee and user.employee.picture %}
+                                            '{{ user.employee.picture.url }}'
+                                        {% else %}
+                                            null
+                                        {% endif %};
+            users.push(user);
+        {% endfor %}
+    </script>
+
+    <div class="grid-main">
+        {% if users|length > 0 %}
+            <div id="grid-accounts">
+                {% for user in users %}
+                    <div class="grid-accounts-user {% if user|has_group:'professors' %}
+                                                       professor
+                                                   {% elif user|has_group:'employees' %}
+                                                       employee
+                                                   {% elif user|has_group:'students' %}
+                                                       student
+                                                   {% endif %}">
+                        <span>{{ user }}</span>
+                    </div>
+                    <div class="grid-accounts-balance {% if user.employee and user.employee.balance < 0 %}
+                                                          grid-accounts-balance-negative
+                                                      {% endif %}">
+                        <span>
+                            {% if user.employee %}
+                                €{{ user.employee.balance }}
+                            {% else %}
+                                €{{ 0|floatformat:2 }}
+                            {% endif %}
+                        </span>
+                    </div>
+                {% endfor %}
+            </div>
+            <form id="pagination">
+                {% include 'chiffee/pagination.html' %}
+            </form>
+            <img id="img-users-256"
+                 class="img-256"
+                 src="{% static 'chiffee/images/256x256/users.png' %}"
+                 alt="Benutzer">
+            <img id="img-money"
+                 class="img-256"
+                 src="{% static 'chiffee/images/256x256/money.png' %}"
+                 alt="Geld">
+        {% else %}
+            <img id="img-users-512"
+                 class="img-512"
+                 src="{% static 'chiffee/images/512x512/users.png' %}"
+                 alt="Benutzer">
+        {% endif %}
+    </div>
+    <div id="container-profile-picture"></div>
+{% endblock %}
