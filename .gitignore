@@ -1,3 +1,5 @@
 chiffee/migrations/
 test*
 *.pyc
+db.sqlite3
+.env
