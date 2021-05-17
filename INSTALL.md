@@ -2,16 +2,16 @@
 
 ## Requirements
 
-To run Chiffee, you will first need Python 3, pip, and Django installed on the server. To do so, run the following 
-commands:
+To run Chiffee, you will first need Python 3, pip, venv, and Django installed on the server. To do so, run the 
+following commands:
 ```
-sudo apt-get install python3 python3-pip virtualenv
+sudo apt-get install python3 python3-pip python3-venv
 pip3 install django
 ```
 
 LDAP also requires some packages installed on the server. To do so, run the following command:
 ```
-sudo apt-get install libsasl2-dev python-dev libldap2-dev libssl-dev
+sudo apt-get install libsasl2-dev python3-dev libldap2-dev libssl-dev
 ```
 
 ## Creating a Django project and virtual environment
@@ -20,28 +20,38 @@ To use Chiffee, we have to create a Django project first. This is done with the 
 ```
 django-admin startproject mysite
 ```
-
 This will create a `mysite` directory in your current directory.
 
 Make sure to create a [virtual environment](https://docs.python.org/3/tutorial/venv.html) inside `mysite`, this will 
 allow you to avoid any conflicts with existing system packages. We'll call the folder containing virtual environment 
 `venv`:
 ```
-virtualenv -p python3 venv
+python3 -m venv venv
 ```
 
 ## Cloning files from GitHub and installing required packages
 
 Clone this repository:
 ```
-git clone https://github.com/LUH-CHI/chiffee.git
+git clone https://github.com/coffeecrank/chiffee.git
 ```
 
-Now activate your virtual environment with `source venv/bin/activate`, navigate to the cloned folder `chiffee` and 
-install all packages listed [here](requirements.txt) by using the following command:
+Now activate your virtual environment with `source venv/bin/activate` and install all packages listed 
+[here](requirements.txt) by using the following commands in the exact same order:
 ```
-pip install -r requirements.txt
+pip3 install wheel
+pip3 install -r requirements.txt
 ```
+
+## Proxy
+
+Installing with pip might be a problem if you're behind a proxy. In this case use the following command before 
+downloading any pip packages:
+```
+export https_proxy=https://[username:password@]proxyserver:port
+```
+Check out [this](https://www.luis.uni-hannover.de/de/services/it-sicherheit/web-proxy/eckdaten-proxy-server/) article 
+for instructions specific to the Leibniz University.
 
 ## Adding Chiffee URL's to your project
 
@@ -49,8 +59,15 @@ Now change the file `mysite/urls.py` by adding the following line to `urlpattern
 ```
 path('', include(('chiffee.urls', 'chiffee'), namespace='chiffee')),
 ```
+This will add Chiffee URL's to your `mysite` project.
 
-This will add Chiffee URL's to your `mysite` project. The resulting `mysite/urls.py` will look like this (don't forget 
+Also make sure to add these lines after `urlpatterns`:
+```
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += i18n_patterns(path('admin/', admin.site.urls))
+```
+
+The resulting `mysite/urls.py` will look like this (don't forget 
 to add an import for `include`):
 ```
 from django.contrib import admin
@@ -61,6 +78,8 @@ urlpatterns = [
     path('', include(('chiffee.urls', 'chiffee'), namespace='chiffee')),
 ]
 
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += i18n_patterns(path('admin/', admin.site.urls))
 ```
 
 ## Adding environment variables
@@ -70,19 +89,26 @@ It's a good practice to store important settings in a separate file instead of h
 Create a file named `.env` and place it in the root `mysite` directory (where `manage.py` is). This file should look 
 like this (don't leave an empty blank line at the end): 
 ```
-LOGIN_REDIRECT_URL=chiffee:index
-LOGIN_URL=chiffee:login
-EMAIL_HOST=mailgate.uni-hannover.de
+EMAIL_HOST='mailgate.uni-hannover.de'
 SECRET_KEY='kj8qe5q#g8e8ks^b@p@!z@3js%ndq@h=lu+jqr7l%#fo1ph8%$'
+
+AUTH_LDAP_SERVER_URI='ldap://myldap.de'
+AUTH_LDAP_BIND_DN=''
+AUTH_LDAP_BIND_PASSWORD=''
+AUTH_LDAP_START_TLS=True
+AUTH_LDAP_BASE_DN='dc=this,dc=is,dc=sparta'
+AUTH_LDAP_OU_GROUPS='ou=groups'
+AUTH_LDAP_CN_ADMINS='cn=mygroup'
+AUTH_LDAP_USER_ATTR_MAP_USERNAME='uid'
+AUTH_LDAP_USER_ATTR_MAP_FIRST_NAME='givenName'
+AUTH_LDAP_USER_ATTR_MAP_LAST_NAME='sn'
+AUTH_LDAP_USER_ATTR_MAP_EMAIL='mail'
+AUTH_LDAP_MIRROR_GROUPS='group1 group2'
 ```
+You should change all these settings accordingly.
 
-You should change `EMAIL_HOST` and `SECRET_KEY`, the latter can match any string of characters, ideally you should copy 
-it from `mysite/settings.py`.
-
-Users from the Leibniz Universität Hannover can leave `mailgate.uni-hannover.de` as their `EMAIL_HOST`.
-
-You also want to import these environment variables when your project runs. Add the following line to 
-`manage.py` inside the `main` function:
+You also want to import these environment variables when your project runs. Add the following line to `manage.py` 
+inside the `main` function:
 ```
 dotenv.load_dotenv()
 ```
@@ -112,7 +138,6 @@ def main():
 
 if __name__ == '__main__':
     main()
-
 ```
 
 If you're using WSGI, then you also have to modify your `mysite/wsgi.py`: 
@@ -128,57 +153,17 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mysite.settings')
 from django.core.wsgi import get_wsgi_application
 
 application = get_wsgi_application()
-
 ```
 
 ## Changing settings.py
 
-Add the following lines to `mysite/settings.py`:
-```
-LOGIN_REDIRECT_URL = os.getenv('LOGIN_REDIRECT_URL')
-LOGIN_URL = os.getenv('LOGIN_URL')
-EMAIL_HOST = os.getenv('EMAIL_HOST')
-```
+You can adjust your `mysite/settings.py` by taking a look at [this](coffee/settings.py) example file. Pay extra 
+attention to the `Quick-start development settings` section.
 
-Also change the `SECRET_KEY` variable:
-```
-SECRET_KEY = os.getenv('SECRET_KEY')
-```
+## Collecting static (not that kind of static)
 
-Change `DEBUG` if running in production:
-```
-DEBUG = False
-```
-
-Add this variable right where `STATIC_URL` is:
-```
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-```
-
-Finally, extend the `INSTALLED_APPS` array with `chiffee` and `django_filters` like this:
-```
-INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'chiffee',
-    'django_filters',
-]
-```
-
-Don't forget to modify `ALLOWED_HOSTS` to include your server address, for example:
-```
-ALLOWED_HOSTS = ['server.uni-hannover.de']
-```
-
-## Adding Bootstrap
-
-Some servers might not be able to connect to the outer world and access Bootstrap online, for that purpose there's a 
-static CSS file inside Chiffee, but you have to make it available for your project. Navigate to where your `manage.py` 
-is and run the following command:
+You want to collect your static files in one location when going to production. Navigate to where your `manage.py` is 
+and run the following command:
 ```
 python manage.py collectstatic
 ```
@@ -196,12 +181,12 @@ If you're moving to v2.0, follow these steps:
   - Copy your database file to the project root directory.
   - Now we need to update the database to the new design, this is where Django migrations come in.
   - You need to copy all your old migrations into the new project first. To do this, copy the folder 
-  `chiffee/migrations` into your new project placing it under the same location. If your old project has no migrations 
-  for some reason, then generate them with `python manage.py makemigrations`.
+    `chiffee/migrations` into your new project placing it under the same location. If your old project has no 
+    migrations for some reason, then generate them with `python manage.py makemigrations`.
   - Navigate to your (new) project folder, activate virtual environment and run `python manage.py migrate --fake` which 
-  makes Django think that old migrations have already been applied to the database (which is sort of true).
+    makes Django think that old migrations have already been applied to the database (which is sort of true).
   - Now run `python manage.py makemigrations --empty chiffee` which will generate an empty migrations file inside 
-  `chiffee/migrations`.
+    `chiffee/migrations`.
   - Open this file and replace the `operations` array with the following:
   ```
   operations = [
@@ -269,63 +254,14 @@ python manage.py makemigrations
 python manage.py migrate
 ```
 
+
 # LDAP
 
 You can use LDAP to authenticate your users. Skip this section if you're not planning to use it.
 
 ## Changing settings.py
 
-Add the following lines to `mysite/settings.py` and fill out the blanks:
-```
-import ldap
-
-from django_auth_ldap.config import GroupOfUniqueNamesType, LDAPSearch
-
-AUTH_LDAP_SERVER_URI = 'ldap://my.ldap.com' # Required.
-PORT = 389 # Change the port if it's not the standard one.
-AUTH_LDAP_START_TLS = True # Make sure the certificate exists. 'False' is for testing only.
-
-AUTH_LDAP_BIND_DN = '' # The distinguished name to use when binding to the LDAP server. Optional.
-AUTH_LDAP_BIND_PASSWORD = '' # Required when 'AUTH_LDAP_BIND_DN' is used.
-
-BASE_DN = 'dc=my,dc=ldap,dc=com' # Modify for user and group search.
-
-AUTH_LDAP_USER_SEARCH = LDAPSearch(
-    BASE_DN,
-    ldap.SCOPE_SUBTREE,
-    '(uid=%(user)s)',
-)
-
-AUTH_LDAP_GROUP_SEARCH = LDAPSearch( # Modify 'ou'.
-    'ou=,' + BASE_DN,
-    ldap.SCOPE_SUBTREE,
-    '(objectClass=groupOfUniqueNames)',
-)
-
-# Modify mappings from LDAP to Django users.
-# If the user already exists, these values will overwrite the existing ones.
-AUTH_LDAP_USER_ATTR_MAP = {
-    'username': 'uid',
-    'first_name': '',
-    'last_name': '',
-    'email': '',
-}
-
-# Modify group permissions.
-AUTH_LDAP_GROUP_TYPE = GroupOfUniqueNamesType(name_attr='cn')
-AUTH_LDAP_USER_FLAGS_BY_GROUP = {
-    'is_superuser': 'cn=,ou=,' + BASE_DN,
-}
-
-# Remove 'ModelBackend' for LDAP authentication only.
-# Remove 'LDAPBackend' for Django authentication only.
-# Order of entries is important if user exists in both backends.
-# First entry is queried first, and LDAP overwrites existing user values!
-AUTHENTICATION_BACKENDS = [
-    'django_auth_ldap.backend.LDAPBackend',
-    'django.contrib.auth.backends.ModelBackend',
-]
-```
+Make sure to take a look at [this](coffee/settings.py) example file for LDAP configuration help.
 
 ## Synchronizing automatically
 
@@ -338,6 +274,7 @@ Either execute the command manually or use a cronjob to sync, e.g. every day at 
 crontab -e
 59 23 * * * cd /home/user/mysite/ && venv/bin/python3 manage.py syncldap
 ```
+
 
 # Running
 

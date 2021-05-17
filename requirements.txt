@@ -1,5 +1,8 @@
 django
 django-auth-ldap
+django-extensions
 django-filter
+django-resized
+pillow
 python-dotenv
 python-ldap
