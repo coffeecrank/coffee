@@ -4,6 +4,18 @@ This is a fork from [LUH-CHI/chiffee](https://github.com/LUH-CHI/chiffee). A sim
 drinks. Used by the employees of the [Computational Health Informatics](https://www.chi.uni-hannover.de/) department at 
 the Leibniz University Hannover.
 
+Home page:
+![1](https://imgur.com/JOZdIk7.jpg)
+
+Shopping cart and checkout:
+![2](https://imgur.com/DPRSkT8.jpg)
+
+Profile:
+![3](https://imgur.com/xdisFqn.jpg)
+
+Accounts:
+![4](https://imgur.com/6rRelfl.jpg)
+
 ## Installing and running
 
 Please check [INSTALL.md](INSTALL.md) for further details.
