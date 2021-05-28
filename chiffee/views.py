@@ -103,7 +103,7 @@ def get_check(shopping_cart):
 
 
 def get_users():
-    groups = ['professors', 'employees', 'students']
+    groups = ['prof', 'wimi', 'stud']
     users = User.objects.filter(groups__name__in=groups,
                                 is_active=True).order_by('last_name',
                                                          'first_name')

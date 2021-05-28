@@ -30,11 +30,11 @@
         {% if users|length > 0 %}
             <div id="grid-accounts">
                 {% for user in users %}
-                    <div class="grid-accounts-user {% if user|has_group:'professors' %}
+                    <div class="grid-accounts-user {% if user|has_group:'prof' %}
                                                        professor
-                                                   {% elif user|has_group:'employees' %}
+                                                   {% elif user|has_group:'wimi' %}
                                                        employee
-                                                   {% elif user|has_group:'students' %}
+                                                   {% elif user|has_group:'stud' %}
                                                        student
                                                    {% endif %}">
                         <span>{{ user }}</span>
