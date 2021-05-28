@@ -63,21 +63,21 @@ DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 
 # Logging
-LOGGING = {'version': 1,
-           'disable_existing_loggers': False,
-           'formatters': {'verbose': {'format': '{asctime} {message}',
-                                      'datefmt': '%d.%m.%Y %H:%M:%S:',
-                                      'style': '{'}},
-           'handlers': {'syncldap': {'level': 'INFO',
-                                     'class': 'logging.FileHandler',
-                                     'filename': os.path.join(BASE_DIR,
-                                                              'chiffee',
-                                                              'logs',
-                                                              'syncldap.txt'),
-                                     'formatter': 'verbose'}},
-           'loggers': {'syncldap': {'handlers': ['syncldap'],
-                                    'level': 'INFO',
-                                    'propagate': True}}}
+# LOGGING = {'version': 1,
+#            'disable_existing_loggers': False,
+#            'formatters': {'verbose': {'format': '{asctime} {message}',
+#                                       'datefmt': '%d.%m.%Y %H:%M:%S:',
+#                                       'style': '{'}},
+#            'handlers': {'syncldap': {'level': 'INFO',
+#                                      'class': 'logging.FileHandler',
+#                                      'filename': os.path.join(BASE_DIR,
+#                                                               'chiffee',
+#                                                               'logs',
+#                                                               'syncldap.txt'),
+#                                      'formatter': 'verbose'}},
+#            'loggers': {'syncldap': {'handlers': ['syncldap'],
+#                                     'level': 'INFO',
+#                                     'propagate': True}}}
 
 
 # LDAP
