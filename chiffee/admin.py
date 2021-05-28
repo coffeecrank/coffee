@@ -28,7 +28,8 @@ class UserAdmin(admin.ModelAdmin):
                     'first_name',
                     'email',
                     'is_staff',
-                    'is_superuser']
+                    'is_superuser',
+                    'is_active']
 
 
 admin.site.register(Deposit, DepositAdmin)
