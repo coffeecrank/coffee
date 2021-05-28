@@ -4,7 +4,7 @@ from .models import Product, User
 
 
 class DepositForm(forms.Form):
-    user = forms.ModelChoiceField(queryset=User.objects.all(),
+    user = forms.ModelChoiceField(queryset=User.objects.filter(active=True),
                                   label='Benutzer',
                                   empty_label='',)
     deposit = forms.DecimalField(initial=0,
