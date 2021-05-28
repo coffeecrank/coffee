@@ -4,9 +4,9 @@ from .models import Product, User
 
 
 class DepositForm(forms.Form):
-    user = forms.ModelChoiceField(queryset=User.objects.filter(active=True),
+    user = forms.ModelChoiceField(queryset=User.objects.filter(is_active=True),
                                   label='Benutzer',
-                                  empty_label='',)
+                                  empty_label='')
     deposit = forms.DecimalField(initial=0,
                                  label='Anzahlung')
 
