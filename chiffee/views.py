@@ -510,8 +510,10 @@ class CustomLoginView(auth_views.LoginView):
     def form_valid(self, form):
         user = User.objects.get(username=form.get_user().username)
 
-        if not user.employee:
-            Employee.objects.create(user)
+        try:
+            user.employee
+        except Employee.DoesNotExist:
+            Employee.objects.create(user=user)
 
         return super().form_valid(form)
 
