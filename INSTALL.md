@@ -3,10 +3,9 @@
 ## Requirements
 
 To run Chiffee, you will first need Python 3, pip, venv, and Django installed on the server. To do so, run the 
-following commands:
+following command:
 ```
-sudo apt-get install python3 python3-pip python3-venv
-pip3 install django
+sudo apt-get install python3 python3-pip python3-venv python3-django
 ```
 
 LDAP also requires some packages installed on the server. To do so, run the following command:
